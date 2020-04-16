@@ -1,0 +1,21 @@
+#root {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+}
+
+.hi {
+  margin: 1em;
+}

@@ -1,0 +1,31 @@
+{
+  "name": "mini-react",
+  "description": "Sam's Implementation of a simplified React for educational purpose.",
+  "author": "Developer Sam",
+  "private": true,
+  "workspaces": [
+    "sam-react",
+    "demo"
+  ],
+  "scripts": {
+    "postinstall": "yarn workspaces run build",
+    "format": "prettier --write '**/*.{ts,tsx,md,css}'",
+    "format:check": "prettier --check '**/*.{ts,tsx,md,css}'"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.3",
+    "prettier": "^2.0.4",
+    "typescript": "^3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,md,css}": [
+      "prettier --write"
+    ]
+  }
+}

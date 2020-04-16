@@ -1,0 +1,11 @@
+{
+  "name": "sam-react",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "dev": "tsc --incremental --watch",
+    "build": "tsc"
+  }
+}
