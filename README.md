@@ -1,5 +1,7 @@
 # mini-react
 
+![CI Badge](https://github.com/SamChou19815/mini-react/workflows/CI/badge.svg)
+
 Sam's Implementation of a simplified React for educational purpose.
 
 ## Scope
