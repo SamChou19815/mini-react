@@ -78,6 +78,9 @@ export default (reactElement: ReactElement, container: HTMLElement): void => {
   root = { virtual, real };
   container.appendChild(real);
   rootContainer = container;
+  // At this point, we finished our first pass of the rendering.
+  // If there is no additional state changes, we can just stop here.
+
   // Here is the dumb rerender scheduler:
   //   Instead of trying rerender when there is a need to,
   //   it tries to find whether we need to rerender by checking the rerender queue every 50ms.
