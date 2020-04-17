@@ -1,3 +1,9 @@
+/*
+ * You can see a lot of use of `any` in the codebase.
+ * Usually you want to avoid that.
+ * However, react runtime is too dynamic so that avoiding all uses of any is impossible.
+ */
+
 export type ComponentType<Props extends {} = any> = (props: Props) => ReactElement<any>;
 
 export type ReactElement<Props extends {} = any> = {
