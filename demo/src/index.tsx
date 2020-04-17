@@ -36,9 +36,7 @@ const MyTime = () => {
   const [time, setTime] = useState(timeToString(new Date()));
 
   useEffect(() => {
-    setTimeout(() => {
-      setTime(timeToString(new Date()));
-    }, 200);
+    setTimeout(() => setTime(timeToString(new Date())), 200);
   });
 
   return (
