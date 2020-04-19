@@ -36,7 +36,7 @@ const updateSpanWithoutChildren = (
   }
   if (
     oldVirtualAndRealDOM === undefined ||
-    oldVirtualAndRealDOM.virtual.props.text !== props.children
+    oldVirtualAndRealDOM.virtual.props.children !== props.children
   ) {
     span.innerText = props.children ?? '';
   }
