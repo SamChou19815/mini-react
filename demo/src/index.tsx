@@ -27,21 +27,16 @@ const MyInput = ({
   return <input value={name} onChange={onInputChange} />;
 };
 
-const timeToString = (date: Date): string =>
-  `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${
-    Math.floor(date.getMilliseconds() / 100) * 100
-  }`;
-
 const MyTime = () => {
-  const [time, setTime] = useState(timeToString(new Date()));
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    setTimeout(() => setTime(timeToString(new Date())), 200);
+    setTimeout(() => setTime(new Date()), 200);
   });
 
   return (
     <div className="center">
-      <span>{time}</span>
+      <span>{time.toLocaleTimeString()}</span>
     </div>
   );
 };
