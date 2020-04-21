@@ -2,7 +2,8 @@
 
 import { ReactElement, VirtualDOMNode, VirtualAndRealDOM } from './types';
 import updateDOM from './dom-manipulator';
-import { fullyEvaluateReactNode, popRerenderJob, runEffects } from './renderer-runtime';
+import { fullyEvaluateReactNode, runEffects } from './renderer-runtime';
+import { registerJobRunner, getScheduler } from './react-scheduler';
 
 let rootContainer: HTMLElement | null = null;
 let root: VirtualAndRealDOM | null = null;
@@ -50,25 +51,18 @@ const rerenderTODOM = (newVirtualDOM: VirtualDOMNode): void => {
   }
 };
 
-const rerenderUntilNoMoreUpdates = (): void => {
-  const currentRoot = root;
-  if (currentRoot === null) {
+registerJobRunner((job) => {
+  const [oldVirtualDOM, newVirtualDOM] = job();
+  if (root === null) {
     throw new Error();
   }
-  while (true) {
-    const job = popRerenderJob();
-    if (job == null) {
-      return;
-    }
-    const [oldVirtualDOM, newVirtualDOM] = job();
-    const newRootVirtualDOM = currentRoot.virtual;
-    // Deep copy the old virtual DOM tree so that reconciler can compare the props between rerenders.
-    const oldRootVirtualDOM = deepCopyVirtualDOM(newRootVirtualDOM);
-    currentRoot.virtual = oldRootVirtualDOM;
-    // Stick the updated node in the correct place.
-    rerenderTODOM(patchVirtualDOMInPlace(newRootVirtualDOM, oldVirtualDOM, newVirtualDOM));
-  }
-};
+  const newRootVirtualDOM = root.virtual;
+  // Deep copy the old virtual DOM tree so that reconciler can compare the props between rerenders.
+  const oldRootVirtualDOM = deepCopyVirtualDOM(newRootVirtualDOM);
+  root.virtual = oldRootVirtualDOM;
+  // Stick the updated node in the correct place.
+  rerenderTODOM(patchVirtualDOMInPlace(newRootVirtualDOM, oldVirtualDOM, newVirtualDOM));
+});
 
 export default (reactElement: ReactElement, container: HTMLElement): void => {
   const virtual = fullyEvaluateReactNode(reactElement);
@@ -81,8 +75,6 @@ export default (reactElement: ReactElement, container: HTMLElement): void => {
   // At this point, we finished our first pass of the rendering.
   // If there is no additional state changes, we can just stop here.
 
-  // Here is the dumb rerender scheduler:
-  //   Instead of trying rerender when there is a need to,
-  //   it tries to find whether we need to rerender by checking the rerender queue every 50ms.
-  setInterval(rerenderUntilNoMoreUpdates, 50);
+  // Here starts our simple scheduler.
+  getScheduler().runTheQueuedJobs();
 };

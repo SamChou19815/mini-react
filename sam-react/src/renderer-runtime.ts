@@ -1,9 +1,9 @@
 /** The module contains runtime support for the render phase. */
 
 import { ReactElement, UseStateReturns, StatefulComponent, VirtualDOMNode } from './types';
+import { getScheduler } from './react-scheduler';
 
 let currentComponent: StatefulComponent | null = null;
-const rerenderQueue: (() => readonly [VirtualDOMNode, VirtualDOMNode])[] = [];
 const globalEffectQueue: (() => void)[] = [];
 
 export const useState = (defaultValue: any): UseStateReturns => {
@@ -25,7 +25,7 @@ export const useState = (defaultValue: any): UseStateReturns => {
         }
         states[currentStateIndex][0] = newValue;
         // Tells schedular how to rerender!
-        rerenderQueue.push(() => [
+        getScheduler().addJob(() => [
           statefulComponent.virtualDOMNode!,
           fullyEvaluateReactNode(statefulComponent.reactElement, statefulComponent),
         ]);
@@ -95,9 +95,6 @@ export const fullyEvaluateReactNode = (
   currentStatefulComponent.virtualDOMNode = fullyReducedNode;
   return fullyReducedNode;
 };
-
-export const popRerenderJob = (): (() => readonly [VirtualDOMNode, VirtualDOMNode]) | undefined =>
-  rerenderQueue.pop();
 
 export const runEffects = (): void => {
   globalEffectQueue.forEach((effect) => effect());
