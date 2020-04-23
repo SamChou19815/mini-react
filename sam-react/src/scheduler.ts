@@ -15,11 +15,11 @@ export default class Scheduler<J> {
     // Instead, we can only start triggering it when the schedular is idle.
     this.jobsQueue.push(job);
     if (this.idle) {
-      this.runTheQueuedJobs();
+      this.runQueuedJobs();
     }
   };
 
-  public runTheQueuedJobs = (): void => {
+  public runQueuedJobs = (): void => {
     // This needs to be public, so that we can call it after initial DOM mount.
     // If there is no update, then it will be a no-op.
     this.idle = false;

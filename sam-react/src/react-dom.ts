@@ -76,5 +76,5 @@ export default (reactElement: ReactElement, container: HTMLElement): void => {
   // If there is no additional state changes, we can just stop here.
 
   // Here starts our simple scheduler.
-  getScheduler().runTheQueuedJobs();
+  getScheduler().runQueuedJobs();
 };
