@@ -16,19 +16,23 @@ export type UseStateReturns = [any, (value: any) => void];
 
 export type StatefulComponent = {
   // Properties necessary for rerender
+  readonly type: 'functional';
   readonly component: ComponentType;
-  readonly reactElement: ReactElement;
-  virtualDOMNode: VirtualDOMNode | null;
+  props: any;
+  currentElement: ReactElement;
+  renderedComponent: Component;
+  realDOMNode: HTMLElement;
   // States
   readonly states: UseStateReturns[];
   currentStateIndex: number;
 };
-
-export type VirtualDOMNode = {
-  readonly component: 'div' | 'input' | 'span';
-  readonly props: any;
-  readonly children: VirtualDOMNode[];
-  statefulComponent?: StatefulComponent;
+export type StatelessComponent = {
+  readonly type: 'intrinsic';
+  component: 'div' | 'input' | 'span';
+  currentElement: ReactElement;
+  children: Component[];
+  realDOMNode: HTMLElement;
 };
+export type Component = StatefulComponent | StatelessComponent;
 
-export type VirtualAndRealDOM = { virtual: VirtualDOMNode; real: HTMLElement };
+export type VirtualAndRealDOM = { virtual: Component; real: HTMLElement };

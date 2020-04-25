@@ -1,6 +1,6 @@
 /** The module contains runtime support for the render phase. */
 
-import { ReactElement, UseStateReturns, StatefulComponent, VirtualDOMNode } from './types';
+import { ReactElement, UseStateReturns, StatefulComponent } from './types';
 import { getScheduler } from './react-scheduler';
 
 let currentComponent: StatefulComponent | null = null;
@@ -23,12 +23,11 @@ export const useState = (defaultValue: any): UseStateReturns => {
           // Bailout of update if state doesn't change.
           return;
         }
-        states[currentStateIndex][0] = newValue;
         // Tells schedular how to rerender!
-        getScheduler().addJob(() => [
-          statefulComponent.virtualDOMNode!,
-          fullyEvaluateReactNode(statefulComponent.reactElement, statefulComponent),
-        ]);
+        getScheduler().addJob(() => {
+          states[currentStateIndex][0] = newValue;
+          return [statefulComponent, renderWithRuntime(statefulComponent)];
+        });
       },
     ];
     states.push(constructedNewStateSlot);
@@ -46,54 +45,14 @@ export const useEffect = (effect: () => void): void => {
   globalEffectQueue.push(effect);
 };
 
-const shallowEvaluateReactNode = (
-  statefulComponent: StatefulComponent,
-  children: readonly (ReactElement | ReactElement[])[]
-): ReactElement => {
+export const renderWithRuntime = (statefulComponent: StatefulComponent): ReactElement => {
   // Inject hooks runtime for rendering.
   currentComponent = statefulComponent;
-  const partiallyReducedNode = statefulComponent.component({
-    ...statefulComponent.reactElement.props,
-    children,
-  });
+  const partiallyReducedNode = statefulComponent.component(statefulComponent.props);
   // De-inject hooks runtime for rendering.
+  statefulComponent.currentStateIndex = 0;
   currentComponent = null;
   return partiallyReducedNode;
-};
-
-export const fullyEvaluateReactNode = (
-  node: ReactElement,
-  statefulComponent?: StatefulComponent
-): VirtualDOMNode => {
-  const { component, props } = node;
-  if (component === 'div' || component === 'input') {
-    return {
-      component,
-      props,
-      children: node.children.map((child) => fullyEvaluateReactNode(child)),
-    };
-  }
-  if (component === 'span') {
-    // Do some special handling of children props passing, to make it always available in the props.
-    let children: string = props.children;
-    if (children == null) {
-      children = (node.children[0] as unknown) as string;
-    }
-    return { component, props: { children }, children: [] };
-  }
-  const currentStatefulComponent: StatefulComponent = statefulComponent ?? {
-    component,
-    reactElement: node,
-    virtualDOMNode: null,
-    states: [],
-    currentStateIndex: 0,
-  };
-  const partiallyReducedNode = shallowEvaluateReactNode(currentStatefulComponent, node.children);
-  const fullyReducedNode = fullyEvaluateReactNode(partiallyReducedNode);
-  fullyReducedNode.statefulComponent = currentStatefulComponent;
-  currentStatefulComponent.currentStateIndex = 0;
-  currentStatefulComponent.virtualDOMNode = fullyReducedNode;
-  return fullyReducedNode;
 };
 
 export const runEffects = (): void => {

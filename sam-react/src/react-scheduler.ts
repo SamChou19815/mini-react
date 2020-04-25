@@ -1,7 +1,7 @@
-import { VirtualDOMNode } from './types';
+import { StatefulComponent, ReactElement } from './types';
 import Scheduler from './scheduler';
 
-type RerenderJob = () => readonly [VirtualDOMNode, VirtualDOMNode];
+type RerenderJob = () => readonly [StatefulComponent, ReactElement];
 
 let scheduler: Scheduler<RerenderJob> | null = null;
 
