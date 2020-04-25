@@ -1,8 +1,12 @@
+/** The module that provides the mount and update component lifecycle. */
+
 import { StatefulComponent, StatelessComponent, Component, ReactElement } from './types';
 import updateDOMWithoutChildren from './dom-manipulator';
 import { renderWithRuntime } from './renderer-runtime';
 
 export const instantiateComponent = (reactElement: ReactElement): Component => {
+  // Contrary to your belief, each intrinsic elements are components.
+  // They have to be wrapped in a component for the uniformity between virtual DOM tree.
   if (
     reactElement.component === 'div' ||
     reactElement.component === 'span' ||
@@ -19,7 +23,6 @@ export const instantiateComponent = (reactElement: ReactElement): Component => {
   return {
     type: 'functional',
     component: reactElement.component,
-    props: reactElement.props,
     currentElement: reactElement,
     renderedComponent: null!,
     realDOMNode: null!,
@@ -39,6 +42,7 @@ const mountChildren = (children: readonly ReactElement[], parentDOM: HTMLElement
 export const mountComponent = (component: Component): HTMLElement => {
   if (component.type === 'intrinsic') {
     const realDOMNode = updateDOMWithoutChildren(component.currentElement);
+    // Don't forget to mount children of div!
     component.children = mountChildren(component.currentElement.children, realDOMNode);
     component.realDOMNode = realDOMNode;
     return realDOMNode;
@@ -55,7 +59,6 @@ const updateStatefulComponent = (
   component: StatefulComponent,
   nextElement: ReactElement
 ): Component | null => {
-  component.props = nextElement.props;
   component.currentElement = nextElement;
   const previousRenderedElement = component.renderedComponent.currentElement;
   const nextRenderedElement = renderWithRuntime(component);
