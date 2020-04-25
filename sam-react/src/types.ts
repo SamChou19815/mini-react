@@ -15,24 +15,35 @@ export type ReactElement<Props extends {} = any> = {
 export type UseStateReturns = [any, (value: any) => void];
 
 export type StatefulComponent = {
-  // Properties necessary for rerender
+  // The field for Component pattern matching
   readonly type: 'functional';
+  // The render function
   readonly component: ComponentType;
-  props: any;
+  // The currently render shallow element. It's the react element that creates this component.
   currentElement: ReactElement;
+  // The component that is rendered as a result of calling `component` function and instantiation.
+  // This field will be late initialized.
   renderedComponent: Component;
+  // The rendered node attached to the virtual DOM hierarchy.
+  // It will be late initialized during mounting phase.
   realDOMNode: HTMLElement;
   // States
   readonly states: UseStateReturns[];
   currentStateIndex: number;
 };
 export type StatelessComponent = {
+  // The field for Component pattern matching
   readonly type: 'intrinsic';
+  // The tag
   component: 'div' | 'input' | 'span';
+  // The currently render shallow element. It's the react element that creates this component.
   currentElement: ReactElement;
+  // A list of children components.
+  // Stateful components don't have them because children in stateful components
+  // are just syntactic sugar of another prop.
   children: Component[];
+  // The rendered node attached to the virtual DOM hierarchy.
+  // It will be late initialized during mounting phase.
   realDOMNode: HTMLElement;
 };
 export type Component = StatefulComponent | StatelessComponent;
-
-export type VirtualAndRealDOM = { virtual: Component; real: HTMLElement };

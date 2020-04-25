@@ -48,7 +48,7 @@ export const useEffect = (effect: () => void): void => {
 export const renderWithRuntime = (statefulComponent: StatefulComponent): ReactElement => {
   // Inject hooks runtime for rendering.
   currentComponent = statefulComponent;
-  const partiallyReducedNode = statefulComponent.component(statefulComponent.props);
+  const partiallyReducedNode = statefulComponent.component(statefulComponent.currentElement.props);
   // De-inject hooks runtime for rendering.
   statefulComponent.currentStateIndex = 0;
   currentComponent = null;

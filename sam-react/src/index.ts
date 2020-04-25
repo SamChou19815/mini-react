@@ -17,8 +17,11 @@ const createElement = <Props extends {}>(
   props: Props,
   ...children: readonly ReactElement[]
 ): ReactElement<Props> => {
-  if (component === 'div' || component === 'input') {
+  if (component === 'div') {
     return { component, props, children };
+  }
+  if (component === 'input') {
+    return { component, props, children: [] };
   }
   if (component === 'span') {
     return {
