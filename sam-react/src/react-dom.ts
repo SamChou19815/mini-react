@@ -1,77 +1,50 @@
 /** The module bootstraps a react app. */
 
-import { ReactElement, VirtualDOMNode, VirtualAndRealDOM } from './types';
-import updateDOM from './dom-manipulator';
-import { fullyEvaluateReactNode, runEffects } from './renderer-runtime';
+import { ReactElement, Component, StatefulComponent } from './types';
+import { runEffects } from './renderer-runtime';
 import { registerJobRunner, getScheduler } from './react-scheduler';
+import { instantiateComponent, mountComponent, updateComponent } from './component-lifecyles';
 
-let rootContainer: HTMLElement | null = null;
-let root: VirtualAndRealDOM | null = null;
+let rootComponent: Component | null = null;
 
-const deepCopyVirtualDOM = (rootNode: VirtualDOMNode): VirtualDOMNode => ({
-  ...rootNode,
-  children: rootNode.children.map(deepCopyVirtualDOM),
-});
-
-const patchVirtualDOMInPlace = (
-  rootNode: VirtualDOMNode,
-  old: VirtualDOMNode,
-  updated: VirtualDOMNode
-): VirtualDOMNode => {
-  if (rootNode === old) {
-    return updated;
+const patchComponentTreeInplace = (
+  rootNode: Component,
+  updatedComponent: StatefulComponent,
+  oldDOMNode: HTMLElement,
+  newDOMNode: HTMLElement
+): void => {
+  if (rootNode.type === 'functional') {
+    if (rootNode.renderedComponent === updatedComponent) {
+      rootNode.realDOMNode = newDOMNode;
+    }
+    patchComponentTreeInplace(rootNode.renderedComponent, updatedComponent, oldDOMNode, newDOMNode);
+    return;
   }
   for (let i = 0; i < rootNode.children.length; i += 1) {
     const child = rootNode.children[i];
-    const updatedChild = patchVirtualDOMInPlace(child, old, updated);
-    if (updated == updatedChild) {
-      rootNode.children[i] = updatedChild;
+    if (child === updatedComponent) {
+      rootNode.realDOMNode.replaceChild(newDOMNode, oldDOMNode);
+      break;
     }
-  }
-  return rootNode;
-};
-
-const rerenderTODOM = (newVirtualDOM: VirtualDOMNode): void => {
-  if (root === null) {
-    throw new Error();
-  }
-  // Most of the time, DOM update can be completely done here!
-  const newReal = updateDOM(newVirtualDOM, root);
-  // Effects are always run after DOM are updated!
-  runEffects();
-  root.virtual = newVirtualDOM;
-  if (newReal !== root.real) {
-    // If the root is replaced, then we need unmount the old root and mount the new one.
-    if (rootContainer === null) {
-      throw new Error();
-    }
-    rootContainer.removeChild(root.real);
-    rootContainer.appendChild(newReal);
-    root.real = newReal;
   }
 };
 
 registerJobRunner((job) => {
-  const [oldVirtualDOM, newVirtualDOM] = job();
-  if (root === null) {
+  if (rootComponent === null) {
     throw new Error();
   }
-  const newRootVirtualDOM = root.virtual;
-  // Deep copy the old virtual DOM tree so that reconciler can compare the props between rerenders.
-  const oldRootVirtualDOM = deepCopyVirtualDOM(newRootVirtualDOM);
-  root.virtual = oldRootVirtualDOM;
-  // Stick the updated node in the correct place.
-  rerenderTODOM(patchVirtualDOMInPlace(newRootVirtualDOM, oldVirtualDOM, newVirtualDOM));
-});
-
-export default (reactElement: ReactElement, container: HTMLElement): void => {
-  const virtual = fullyEvaluateReactNode(reactElement);
-  const real = updateDOM(virtual);
+  const [statefulComponent, nextElement] = job();
+  updateComponent(statefulComponent, nextElement);
   // Effects are always run after DOM are updated!
   runEffects();
-  root = { virtual, real };
-  container.appendChild(real);
-  rootContainer = container;
+});
+
+export default (reactElement: ReactElement): void => {
+  rootComponent = instantiateComponent(reactElement);
+  const rootDOM = mountComponent(rootComponent);
+  // Effects are always run after DOM are updated!
+  runEffects();
+  document.body.appendChild(rootDOM);
   // At this point, we finished our first pass of the rendering.
   // If there is no additional state changes, we can just stop here.
 

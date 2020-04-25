@@ -6,8 +6,7 @@ const HiDiv = ({ name }: { readonly name: string }) => (
   <div className="hi">
     <span>Hi</span>
     <div>
-      <span children="Developer " />
-      <span>{name}</span>
+      <span>{`Developer ${name}`}</span>
     </div>
   </div>
 );
@@ -50,7 +49,7 @@ const App = () => {
 
   if (name.startsWith('Developer')) {
     // This ensures that the root is nuked!
-    return <span children="'Developer' is already in the template! Why Repeat?!" />;
+    return <span>'Developer' is already in the template! Why Repeat?!</span>;
   }
 
   return (
@@ -64,8 +63,4 @@ const App = () => {
   );
 };
 
-const root = document.getElementById('root');
-if (root == null) {
-  throw new Error();
-}
-React.mountToDOM(<App />, root);
+React.mountToDOM(<App />);
