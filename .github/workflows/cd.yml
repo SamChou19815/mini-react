@@ -1,13 +1,13 @@
-name: CI
+name: CD
 on:
   push:
     branches:
       - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    name: Check
+    name: Deploy
     steps:
       - uses: actions/checkout@master
       - name: Yarn Install
