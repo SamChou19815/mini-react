@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "tsc"
+    "build": "react-scripts build"
   },
   "dependencies": {
     "sam-react": "0.0.1"
