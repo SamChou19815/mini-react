@@ -8,8 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Yarn Install
+        # already run build here
         run: yarn
       - name: Check Format
         run: yarn format:check
-      - name: Build
-        run: yarn workspaces run build

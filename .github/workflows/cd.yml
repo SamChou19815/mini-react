@@ -11,9 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Yarn Install
+        # already run build here
         run: yarn
-      - name: Build
-        run: yarn workspaces run build
       - name: deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
