@@ -55,9 +55,7 @@ const App = () => {
   return (
     <div>
       <div className="header">
-        <div className="header-container">
-          <span>Developer Sam</span>
-        </div>
+        <div className="header-container">Developer Sam</div>
       </div>
       <div className="hidden-below-header" />
       <MyTime />
@@ -66,26 +64,19 @@ const App = () => {
         <MyInput name={name} onChange={setName} />
       </div>
       <div className="note">
-        <div className="note-header">
-          <span>Developer Note</span>
+        <div className="note-header">Developer Note</div>
+        <div>This is just a random site. The design is ugly.</div>
+        <div>
+          The inputbox can auto sync with the text on the left. However, it appears like the website
+          is built with React, so there is really nothing to brag about.
         </div>
         <div>
-          <span>This is just a random site. The design is ugly.</span>
+          The only noteworthy thing is: the React is{' '}
+          <a href="https://github.com/SamChou19815/mini-react">Sam's React</a> (although a simplied
+          one).
         </div>
         <div>
-          <span>The inputbox can auto sync with the text on the left. </span>
-          <span>However, it appears like the website is built with React, </span>
-          <span>so there is really nothing to brag about.</span>
-        </div>
-        <div>
-          <span>The only noteworthy thing is: </span>
-          <span>the React is </span>
-          <a href="https://github.com/SamChou19815/mini-react">Sam's React</a>
-          <span> (although a simplied one).</span>
-        </div>
-        <div>
-          <span>Feel free to open developer console to read the code.</span>
-          <span>The source maps will help you.</span>
+          Feel free to open developer console to read the code. The source maps will help you.
         </div>
       </div>
       <div className="note">
@@ -102,9 +93,7 @@ const App = () => {
           <a href="https://github.com/SamChou19815/mini-react">This project's GitHub</a>
         </div>
       </div>
-      <div className="footer">
-        <span>{`Copyright © ${new Date().getFullYear()} Developer Sam`}</span>
-      </div>
+      <div className="footer">{`Copyright © ${new Date().getFullYear()} Developer Sam`}</div>
     </div>
   );
 };

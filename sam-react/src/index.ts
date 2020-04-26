@@ -15,11 +15,19 @@ const useState = <T>(initialValue: T): readonly [T, (newValue: T) => void] =>
 const createElement = <Props extends {}>(
   component: ComponentType<Props> | 'div' | 'span' | 'a' | 'input',
   props: Props | null,
-  ...children: readonly ReactElement[]
+  ...children: readonly (ReactElement | string)[]
 ): ReactElement<Props> => {
   props = props ?? ({} as Props);
   if (component === 'div') {
-    return { component, props, children };
+    return {
+      component,
+      props,
+      children: children.map((child) =>
+        typeof child === 'string'
+          ? { component: 'span', props: { children: child }, children: [] }
+          : child
+      ),
+    };
   }
   if (component === 'input') {
     return { component, props, children: [] };
