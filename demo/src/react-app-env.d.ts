@@ -21,6 +21,7 @@ declare global {
     interface IntrinsicElements {
       div: { readonly className?: string };
       span: { readonly children?: string };
+      a: { readonly href?: string; readonly children?: string };
       input: { readonly value?: string; readonly onChange?: (event: Event) => void };
     }
   }

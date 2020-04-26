@@ -13,7 +13,7 @@ const useState = <T>(initialValue: T): readonly [T, (newValue: T) => void] =>
  * In this way, we are able to reuse the existing toolchain!
  */
 const createElement = <Props extends {}>(
-  component: ComponentType<Props> | 'div' | 'span' | 'input',
+  component: ComponentType<Props> | 'div' | 'span' | 'a' | 'input',
   props: Props | null,
   ...children: readonly ReactElement[]
 ): ReactElement<Props> => {
@@ -25,6 +25,13 @@ const createElement = <Props extends {}>(
     return { component, props, children: [] };
   }
   if (component === 'span') {
+    return {
+      component,
+      props: { ...props, children: (children[0] as unknown) as string },
+      children: [],
+    };
+  }
+  if (component === 'a') {
     return {
       component,
       props: { ...props, children: (children[0] as unknown) as string },

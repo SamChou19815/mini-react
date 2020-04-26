@@ -37,6 +37,26 @@ const updateSpanWithoutChildren = (
   return span;
 };
 
+const updateAnchorWithoutChildren = (
+  props: { readonly href?: string; readonly children?: string },
+  component?: Component
+): HTMLAnchorElement => {
+  // Not so different from the div case
+  let a: HTMLAnchorElement;
+  if (component !== undefined && component.realDOMNode instanceof HTMLAnchorElement) {
+    a = component.realDOMNode;
+  } else {
+    a = document.createElement('a');
+  }
+  if (component === undefined || component.currentElement.props.href !== props.href) {
+    a.href = props.href ?? '';
+  }
+  if (component === undefined || component.currentElement.props.children !== props.children) {
+    a.innerText = props.children ?? '';
+  }
+  return a;
+};
+
 const updateInputWithoutChildren = (
   props: { readonly value?: string; readonly onChange?: (event: Event) => void },
   component?: Component
@@ -71,6 +91,8 @@ const updateDOMWithoutChildren = (
     element = updateDivWithoutChildren(virtualDOM.props, oldComponent);
   } else if (virtualDOM.component === 'span') {
     element = updateSpanWithoutChildren(virtualDOM.props, oldComponent);
+  } else if (virtualDOM.component === 'a') {
+    element = updateAnchorWithoutChildren(virtualDOM.props, oldComponent);
   } else if (virtualDOM.component === 'input') {
     element = updateInputWithoutChildren(virtualDOM.props, oldComponent);
   } else {
