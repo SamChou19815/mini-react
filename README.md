@@ -29,11 +29,12 @@ so that I could teach it to an average developer in a software project team in l
 
 ## Supported React Features
 
-- Native elements: only `<div />`, `<span />` and `<input />`
+- Native elements: only `<div />`, `<span />`, `<a />` and `<input />`
   - The only prop allowed for `div` is `className`.
   - The only prop allowed for `span` is `children`, which must be a string.
+  - The only prop allowed for `a` is `href` and `children`, and `children` must be a string.
   - The only props allowed for `input` is `value` and `onChange`
-- No support for plain text without wrapping it in `span`.
+- Plain text is automatically wrapped in `span`.
 - No support for variable number of children in JSX.
 - `useState` hook
   - Initializer must be a value instead of a function.
