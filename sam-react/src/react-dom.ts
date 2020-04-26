@@ -39,12 +39,12 @@ registerJobRunner((job) => {
   runEffects();
 });
 
-export default (reactElement: ReactElement): void => {
+export default (reactElement: ReactElement, rootContainer: HTMLElement): void => {
   rootComponent = instantiateComponent(reactElement);
   const rootDOM = mountComponent(rootComponent);
   // Effects are always run after DOM are updated!
   runEffects();
-  document.body.appendChild(rootDOM);
+  rootContainer.appendChild(rootDOM);
   // At this point, we finished our first pass of the rendering.
   // If there is no additional state changes, we can just stop here.
 

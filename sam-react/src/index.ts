@@ -14,9 +14,10 @@ const useState = <T>(initialValue: T): readonly [T, (newValue: T) => void] =>
  */
 const createElement = <Props extends {}>(
   component: ComponentType<Props> | 'div' | 'span' | 'input',
-  props: Props,
+  props: Props | null,
   ...children: readonly ReactElement[]
 ): ReactElement<Props> => {
+  props = props ?? ({} as Props);
   if (component === 'div') {
     return { component, props, children };
   }
