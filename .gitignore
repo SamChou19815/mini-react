@@ -1,4 +1,5 @@
 node_modules
 lib
 build
+.firebase
 .DS_Store

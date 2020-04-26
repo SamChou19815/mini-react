@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "developer-sam"
+  },
+  "targets": {
+    "developer-sam": {
+      "hosting": {
+        "mini-react": [
+          "developer-sam-mini-react"
+        ]
+      }
+    }
+  }
+}
