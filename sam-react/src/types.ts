@@ -7,7 +7,7 @@
 export type ComponentType<Props extends {} = any> = (props: Props) => ReactElement<any>;
 
 export type ReactElement<Props extends {} = any> = {
-  readonly component: ComponentType<Props> | 'div' | 'input' | 'span';
+  readonly component: ComponentType<Props> | 'div' | 'input' | 'a' | 'span';
   readonly props: Props;
   readonly children: readonly ReactElement[];
 };
@@ -35,7 +35,7 @@ export type StatelessComponent = {
   // The field for Component pattern matching
   readonly type: 'intrinsic';
   // The tag
-  component: 'div' | 'input' | 'span';
+  component: 'div' | 'span' | 'a' | 'input';
   // The currently render shallow element. It's the react element that creates this component.
   currentElement: ReactElement;
   // A list of children components.

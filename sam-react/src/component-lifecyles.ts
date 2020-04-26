@@ -10,6 +10,7 @@ export const instantiateComponent = (reactElement: ReactElement): Component => {
   if (
     reactElement.component === 'div' ||
     reactElement.component === 'span' ||
+    reactElement.component === 'a' ||
     reactElement.component === 'input'
   ) {
     return {
