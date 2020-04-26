@@ -63,4 +63,4 @@ const App = () => {
   );
 };
 
-React.mountToDOM(<App />);
+React.mountToDOM(<App />, document.getElementById('root')!);
