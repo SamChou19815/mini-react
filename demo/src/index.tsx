@@ -103,7 +103,7 @@ const App = () => {
         </div>
       </div>
       <div className="footer">
-        <span>Copyright © 2020 Developer Sam</span>
+        <span>{`Copyright © ${new Date().getFullYear()} Developer Sam`}</span>
       </div>
     </div>
   );

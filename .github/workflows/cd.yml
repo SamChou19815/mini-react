@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Check
+    steps:
+      - uses: actions/checkout@master
+      - name: Yarn Install
+        run: yarn
+      - name: Build
+        run: yarn workspaces run build
+      - name: deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: yarn firebase deploy --token "$FIREBASE_TOKEN"
