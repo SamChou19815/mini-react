@@ -47,9 +47,8 @@ so that I could teach it to an average developer in a software project team in l
 
 In addition to the features that are not supported, the project has these limitations:
 
-- Reconcilator is not very efficient. It needs a deep copy of the entire virtual DOM every time it
-  rerenders. The only guarantee is that only changed DOM elements will be touched in each rerender.
-- The rerender schedular is dumb.
+- Reconcilator is not very efficient when dealing with children changes.
+- The rerender schedular is naive.
 - Conditional rendering and other techniques become more awkward to write.
 - Zero support for a11y.
 - It is not compatible with all the currently available React libraries.
