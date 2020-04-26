@@ -13,7 +13,6 @@
     "format:check": "prettier --check '**/*.{ts,tsx,md,css}'"
   },
   "devDependencies": {
-    "firebase-tools": "^8.1.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
     "prettier": "2.0.5",
