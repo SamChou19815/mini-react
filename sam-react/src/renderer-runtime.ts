@@ -39,9 +39,6 @@ export const useState = (defaultValue: any): UseStateReturns => {
 };
 
 export const useEffect = (effect: () => void): void => {
-  if (currentComponent === null) {
-    throw new Error();
-  }
   globalEffectQueue.push(effect);
 };
 
