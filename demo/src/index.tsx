@@ -61,7 +61,7 @@ const App = () => {
       <div className="hidden-below-header" />
       <MyTime />
       <div className="center">
-        <img src={devsam} alt="devsam" />
+        <img src={devsam} />
         <HiDiv name={name} />
         <MyInput name={name} onChange={setName} />
       </div>
