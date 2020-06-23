@@ -11,7 +11,8 @@ export const instantiateComponent = (reactElement: ReactElement): Component => {
     reactElement.component === 'div' ||
     reactElement.component === 'span' ||
     reactElement.component === 'a' ||
-    reactElement.component === 'input'
+    reactElement.component === 'input' ||
+    reactElement.component === 'img'
   ) {
     return {
       type: 'intrinsic',
