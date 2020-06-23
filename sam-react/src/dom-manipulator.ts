@@ -82,6 +82,25 @@ const updateInputWithoutChildren = (
   return input;
 };
 
+const updateImageWithoutChildren = (
+  props: { readonly src: string; readonly alt?: string },
+  component?: Component
+): HTMLImageElement => {
+  let img: HTMLImageElement;
+  if (component !== undefined && component.realDOMNode instanceof HTMLImageElement) {
+    img = component.realDOMNode;
+  } else {
+    img = document.createElement('img');
+  }
+  if (component === undefined || component.currentElement.props.src !== props.src) {
+    img.src = props.src ?? '';
+  }
+  if (component === undefined || component.currentElement.props.alt !== props.alt) {
+    img.alt = props.alt ?? '';
+  }
+  return img;
+};
+
 const updateDOMWithoutChildren = (
   virtualDOM: ReactElement,
   oldComponent?: Component
@@ -95,6 +114,8 @@ const updateDOMWithoutChildren = (
     element = updateAnchorWithoutChildren(virtualDOM.props, oldComponent);
   } else if (virtualDOM.component === 'input') {
     element = updateInputWithoutChildren(virtualDOM.props, oldComponent);
+  } else if (virtualDOM.component === 'img') {
+    element = updateImageWithoutChildren(virtualDOM.props, oldComponent);
   } else {
     throw new Error();
   }
