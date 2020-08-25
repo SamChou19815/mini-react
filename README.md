@@ -2,7 +2,8 @@
 
 ![CI Badge](https://github.com/SamChou19815/mini-react/workflows/CI/badge.svg)
 
-Sam's Implementation of a simplified React for educational purpose.
+Sam's Implementation of a simplified React for educational purpose. See the
+[slides](https://developersam.com/build-simplified-react.pdf) I used for Cornell DTI's DevSesh.
 
 ## Scope
 
