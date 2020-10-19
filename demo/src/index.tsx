@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'sam-react';
 // CSS loading works as usual, since we are able to reuse the CRA toolchain.
 import './index.css';
-import devsam from './img/devsam.png';
+import fanArt from './img/fan-art-iteration-3.jpeg';
 
 const HiDiv = ({ name }: { readonly name: string }) => (
   <div className="hi">
@@ -61,7 +61,7 @@ const App = () => {
       <div className="hidden-below-header" />
       <MyTime />
       <div className="center">
-        <img src={devsam} alt="devsam" />
+        <img src={fanArt} alt="devsam" />
         <HiDiv name={name} />
         <MyInput name={name} onChange={setName} />
       </div>
