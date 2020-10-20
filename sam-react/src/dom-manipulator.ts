@@ -83,7 +83,7 @@ const updateInputWithoutChildren = (
 };
 
 const updateImageWithoutChildren = (
-  props: { readonly src: string; readonly alt?: string },
+  props: { readonly className?: string; readonly src: string; readonly alt?: string },
   component?: Component
 ): HTMLImageElement => {
   let img: HTMLImageElement;
@@ -97,6 +97,9 @@ const updateImageWithoutChildren = (
   }
   if (component === undefined || component.currentElement.props.alt !== props.alt) {
     img.alt = props.alt ?? '';
+  }
+  if (component === undefined || component.currentElement.props.className !== props.className) {
+    img.className = props.className ?? '';
   }
   return img;
 };
