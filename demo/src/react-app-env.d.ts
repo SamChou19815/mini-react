@@ -23,7 +23,7 @@ declare global {
       span: { readonly children?: string };
       a: { readonly href?: string; readonly children?: string };
       input: { readonly value?: string; readonly onChange?: (event: Event) => void };
-      img: { readonly src: string; readonly alt?: string };
+      img: { readonly className?: string; readonly src: string; readonly alt?: string };
     }
   }
 }
