@@ -13,19 +13,7 @@
     "format:check": "prettier --check '**/*.{ts,tsx,md,css}'"
   },
   "devDependencies": {
-    "husky": "^4.2.5",
-    "lint-staged": "^10.1.7",
-    "prettier": "2.0.5",
-    "typescript": "3.8.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.{ts,tsx,md,css}": [
-      "prettier --write"
-    ]
+    "prettier": "2.2.1",
+    "typescript": "4.2.4"
   }
 }
