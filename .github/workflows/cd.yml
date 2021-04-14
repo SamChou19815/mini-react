@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Deploy
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
-          yarn add -W --dev firebase-tools
-          yarn firebase deploy --token "$FIREBASE_TOKEN"
+          yarn add -W --dev netlify-cli
+          yarn netlify deploy -d demo/build -s mini-react.developersam.com --prod
